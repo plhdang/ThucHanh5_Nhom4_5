@@ -71,5 +71,3 @@ Sau khi hoàn thành bài thực hành, sinh viên có thể:
 - Sử dụng AI một cách đạo đức và minh bạch.
 - Quản lý file và phiên bản bằng Git/GitHub.
 - Làm việc nhóm hiệu quả trong môi trường trực tuyến.
-
----

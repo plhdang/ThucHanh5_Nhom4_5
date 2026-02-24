@@ -1,3 +1,12 @@
+## 👥 Giới thiệu thành viên nhóm
+
+| STT | Họ và tên | MSSV | 
+|-----|-----------|------|
+| 1 | Trần Vũ Trường Giang |B2509660 | 
+| 2 | Nguyễn Kim Thư | B2504859 | 
+| 3 | Hồ Nhã Uyên | B2504864 | 
+| 4 | Phạm Lê Hải Đăng | B2509658| 
+
 # BÀI THỰC HÀNH 05  
 ## TẠO, QUẢN LÝ VÀ CHIA SẺ NỘI DUNG SỐ
 

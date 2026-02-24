@@ -73,12 +73,3 @@ Sau khi hoàn thành bài thực hành, sinh viên có thể:
 - Làm việc nhóm hiệu quả trong môi trường trực tuyến.
 
 ---
-
-## 6. Danh sách file trong repository
-
-- report.pdf
-- infographic.png
-- video.mp4
-- index.html
-- README.md
-- screenshot_version_history.png

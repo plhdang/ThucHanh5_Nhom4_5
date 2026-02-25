@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Infographic & Video</title>
+        <style>
+            :root{
+                font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+            }
+            html,body{
+                height:100%;
+            }
+            body{
+                margin:0;
+                display:flex;align-items:center;
+                justify-content:center;
+                padding:20px;
+                background:#fbfcff;
+                color:#111;
+            }
+            .wrap{
+                width:100%;
+                max-width:980px;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                gap:20px;
+            }
+
+            /* Card (nền trắng bo góc, căn giữa) */
+            .card{
+                background:#605856;
+                border-radius:14px;
+                box-shadow:0 8px 24px rgba(23,40,70,0.08);
+                padding:28px;
+                min-height:auto;
+                width:100%;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:flex-start;
+                gap:20px;
+                position:relative;
+                overflow:visible;
+            }
+
+            /* Tiêu đề */
+            .title{
+                color:rgb(243, 243, 243);
+                text-shadow: 1px 1px 4px rgb(170, 173, 255);
+                font-size:1.55rem;
+                font-weight:700;
+                text-align:center;
+                margin: 0;
+            }
+            .subtitle{
+                color:#556; 
+                font-size:0.98rem;
+                margin-top:8px;
+                text-align:center;
+            }
+
+            /* Vùng nội dung có hiệu ứng lật trang */
+            .page{
+                width:100%;
+                max-width:820px;
+                height:280px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                perspective:1200px
+            }
+            .page-inner{
+                width:100%;
+                height:100%;
+                border-radius:10px;
+                transform-style:preserve-3d;
+                transition:transform 700ms ease;
+                position:relative
+            }
+            .page-inner.flipping{
+                animation:pageFlip 700ms ease
+            }
+
+            @keyframes pageFlip{
+                0%{transform:rotateY(0deg)}
+                50%{transform:rotateY(90deg)}
+                100%{transform:rotateY(0deg)}
+            }
+
+            .view{
+                position:absolute;
+                inset:0;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                backface-visibility:hidden;
+                padding:18px;
+            }
+            .view img, .view video{
+                max-width:100%;
+                max-height:100%;
+                border-radius:8px;
+                box-shadow:0 6px 18px rgba(10,20,40,0.06)
+            }
+
+            /* Buttons */
+            .controls{
+                display:flex;gap:12px;
+                justify-content:center;
+            }
+            button.control-btn{
+                background:#e1e1e1;
+                color:#605856;
+                border:none;
+                padding:10px 14px;
+                border-radius:10px;
+                font-weight:600;
+                cursor:pointer;
+                min-width:160px;
+            }
+            button.control-btn.secondary{
+                background:#e1e1e1;
+            }
+            button.control-btn:active{
+                transform:translateY(1px)
+            }
+               /* Ghi chú */
+            .notes{
+                color:#f0f0f0;
+                font-size:0.95rem;
+                text-align:center;
+                padding:12px 16px;
+                background:transparent;
+                border-radius:8px;
+                max-width:820px;
+                line-height:1.5;
+                min-height:auto;
+                display:none;
+                align-items:center;
+                justify-content:center;
+            }
+            .notes.show{
+                display:flex;
+            }
+            
+            /* Responsive */
+            @media (max-width:720px){
+                .page{height:260px}
+                .card{padding:20px}
+                button.control-btn{min-width:140px;padding:10px}
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrap">
+            <div class="card" role="region" aria-label="Infographic và Video">
+                <div id="contentTop">
+                    <h1 class="title" id="mainTitle">Lợi ích của công nghệ số</h1>
+                    <p class="subtitle"></p>
+                </div>
+
+                <div class="page" aria-live="polite">
+                    <div id="pageInner" class="page-inner">
+                        <div id="view" class="view"> 
+                            <!-- Hiển thị hình ảnh từ web -->
+                            <img src="background.jpg" alt="Trang chủ" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;">
+                        </div>
+                        </div>
+                    </div>
+                    <div id="notes" class="notes"></div>
+                </div>
+                <div class="controls">
+                    <button id="btnImage" class="control-btn" aria-pressed="false">Xem Infographic</button>
+                    <button id="btnVideo" class="control-btn secondary" aria-pressed="false">Xem Video</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function(){
+                const pageInner = document.getElementById('pageInner')
+                const view = document.getElementById('view')
+                const btnImage = document.getElementById('btnImage')
+                const btnVideo = document.getElementById('btnVideo')
+                const mainTitle = document.getElementById('mainTitle')
+                const notes = document.getElementById('notes')
+                const ASSETS = {
+                    image: 'Lợi ích của công nghệ trong học tập..png',
+                    video: 'Loiichcongngheso (3).mp4',
+                    poster: 'hinhanhchenvideo.jpg'
+                }
+
+                let current = 'homepage' // 'homepage' | 'image' | 'video'
+                const animDuration = 700
+
+                function setButtons(){
+                    // Image button toggles between show image and back to title
+                    if(current === 'image'){
+                        btnImage.textContent = 'Quay về trang chủ'
+                        btnImage.setAttribute('aria-pressed','true')
+                    } else {
+                        btnImage.textContent = 'Xem Infographic'
+                        btnImage.setAttribute('aria-pressed','false')
+                    }
+
+                    if(current === 'video'){
+                        btnVideo.textContent = 'Quay về trang chủ'
+                        btnVideo.setAttribute('aria-pressed','true')
+                    } else {
+                        btnVideo.textContent = 'Xem Video'
+                        btnVideo.setAttribute('aria-pressed','false')
+                    }
+                }
+
+                function renderView(kind){
+                    // Return DOM nodes for a view
+                    if(kind === 'homepage'){
+                        mainTitle.textContent = 'Lợi ích của công nghệ số'
+                         notes.textContent = ''
+                         notes.style.display = 'none'
+                         return `<img src="background.jpg" alt="Trang chủ" loading="lazy">`
+                    }
+
+                    if(kind === 'image'){
+                        mainTitle.textContent = 'Infographic về lợi ích của công nghệ số trong học tập'
+                        notes.textContent = 'Infographic tạo bởi Canva AI, hình ảnh từ Unsplash (CC0)'
+                        notes.style.display = 'flex'
+                        return `<img src="Lợi ích của công nghệ trong học tập..png" alt="Lợi ích của công nghệ số canva ai" loading="lazy">`
+                    }
+
+                    if(kind === 'video'){
+                        mainTitle.textContent = 'Video ngắn giới thiệu lợi ích công nghệ số'
+                        notes.textContent = 'Video tạo bởi CapCut, tài liệu từ Pexels/FreeSound (CC0)'
+                        notes.style.display = 'flex'
+                        return `<video controls playsinline preload="metadata" poster="hinhanhchenvideo.jpg" style="max-height:100%;width:auto;max-width:100%;">`+
+                                    `<source src="Loiichcongngheso (3).mp4" type="video/mp4">`+
+                                    `Trình duyệt không hỗ trợ video. <a href="Loiichcongngheso (3).mp4">Tải video</a>.`+
+                                    `</video>`
+                    }
+                }
+
+                function flipTo(target){
+                    if(target === current) return
+                    // trigger flip animation: add class, swap content at halfway
+                    pageInner.classList.add('flipping')
+                    // hide any playing video before swap
+                    const prevVideo = view.querySelector('video')
+                    if(prevVideo && !prevVideo.paused){ try{ prevVideo.pause() }catch(e){} }
+
+                    setTimeout(()=>{
+                        view.innerHTML = renderView(target)
+                    }, animDuration/2)
+
+                    setTimeout(()=>{
+                        pageInner.classList.remove('flipping')
+                        current = target
+                        setButtons()
+                    }, animDuration)
+                }
+
+                // Button handlers
+                btnImage.addEventListener('click', ()=>{
+                    if(current === 'image') flipTo('homepage')
+                    else flipTo('image')
+                })
+
+                btnVideo.addEventListener('click', ()=>{
+                    if(current === 'video') flipTo('homepage')
+                    else flipTo('video')
+                })
+
+                // init
+                setButtons()
+
+                // Accessibility: allow left/right arrow to navigate sequentially
+                document.addEventListener('keydown',(e)=>{
+                    if(e.key === 'ArrowRight'){
+                        if(current === 'homepage') flipTo('image')
+                        else if(current === 'image') flipTo('video')
+                        else flipTo('homepage')
+                    }
+                    if(e.key === 'ArrowLeft'){
+                        if(current === 'homepage') flipTo('image')
+                        else if(current === 'image') flipTo('video')
+                        else flipTo('homepage')
+                    }
+                })
+
+            })()
+        </script>
+    </body>
+</html>
